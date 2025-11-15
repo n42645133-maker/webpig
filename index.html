@@ -3,12 +3,20 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Plane Mirror — Fixed Mirror, Draggable O & Eye (Canvas Mode)</title>
+<title>Plane Mirror, Draggable O & Eye (Canvas Mode)</title>
 <style>
   :root{
     --card:#ffffff; --muted:#6b7280; --accent:#f97316; --eye:#2563eb; --green:#10b981; --glass: rgba(15,23,42,0.04);
   }
-  html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+  @font-face {
+    font-family: 'Pyidaungsu';
+    src: url('fonts/Pyidaungsu.woff2') format('woff2'),
+         url('fonts/Pyidaungsu.woff') format('woff'),
+         url('fonts/Pyidaungsu.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  html,body{height:100%;margin:0;font-family: 'Pyidaungsu', sans-serif;}
   body{display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#e6eefc 0%,#f8fafc 100%);padding:18px;color:#0b1220}
   .app{Width:100%;max-width:1100px;background:var(--card);border-radius:12px;padding:14px;box-shadow:0 10px 40px rgba(12,18,31,0.06)}
   header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
@@ -16,7 +24,7 @@
   .main{display:flex;gap:12px}
   .canvas-wrap{flex:1;min-width:420px;background:var(--glass);border-radius:8px;padding:10px}
   canvas{width:100%;height:560px;border-radius:6px;background: lightblue;display:block;touch-action:none}
-  .panel{width:320px;min-width:260px}
+  .panel{width:380px;min-width:260px}
   .controls{background:#fff;border-radius:8px;padding:12px;border:1px solid #eef2ff;box-shadow:0 4px 18px rgba(14,22,50,0.03)}
   label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
   .btn{display:inline-block;padding:8px 10px;border-radius:8px;background:linear-gradient(180deg,#2563eb,#1d4ed8);color:white;font-weight:600;border:none;cursor:pointer}
@@ -40,7 +48,7 @@
 <body>
   <div class="app" role="application" aria-label="Plane mirror reflection simulator (fixed mirror)">
     <header>
-      <h1>Reflection by a Plane Mirror — Fixed Mirror</h1>
+      <h1>Reflection by a Plane Mirror(Simulation)</h1>
       <div class="muted">Mirror is fixed. Drag only the object (orange) and the eye (blue).</div>
     </header>
 
@@ -84,7 +92,7 @@
             <div class="readout">O to image dist: <strong id="oiDist">—</strong></div>
           </div>
 
-          <div class="question" id="fillBlank">object distance = image distance = ___ cm.</div>
+          <div class="question" id="fillBlank">object distance = image distance = ___ cm. angle of incidence = angle of reflection = ___.</div>
 
         </div>
         <div class="footer">Tip: double-click canvas to reset. Snap toggles 10px grid snapping for O & Eye.</div>
@@ -384,8 +392,8 @@
         ctx.font = '12px Inter, Arial'; ctx.fillStyle = '#065f46';
         ctx.fillText(`${distOIcm.toFixed(1)} cm`, midOI.x + 8, midOI.y - 8);
 
-        // Update the fill-the-blank question (object distance = image distance)
-        fillBlankEl.textContent = `fill the blank: object distance = image distance = ${distOIcm.toFixed(1)} cm.`;
+        // Update the fill-the-blank question (object distance = image distance) and show angles
+        fillBlankEl.textContent = `object distance = image distance = ${distOIcm.toFixed(1)} cm. angle of incidence = angle of reflection = ${res.inDeg}°.`;
       }
 
       // readouts (perpendicular distance converted to cm; show both perp and O->O' if available)
@@ -399,7 +407,7 @@
       incRefEl.textContent = '— / —';
       hitPointEl.textContent = '—';
       oiDistEl.textContent = '—';
-      fillBlankEl.textContent = 'fill the blank: object distance = image distance = ___ cm.';
+      fillBlankEl.textContent = 'object distance = image distance = ___ cm. angle of incidence = angle of reflection = ___.';
     }
 
     // draw O
